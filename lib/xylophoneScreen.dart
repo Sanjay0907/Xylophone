@@ -11,83 +11,86 @@ class XylophoneScreen extends StatefulWidget {
 class _XylophoneScreenState extends State<XylophoneScreen> {
   AudioPlayer audioPlayer = AudioPlayer();
 
+  getAudioFilePath(int index) {
+    switch (index) {
+      case 0:
+        return 'sounds/xyloNote1.wav';
+      case 1:
+        return 'sounds/xyloNote2.wav';
+      case 2:
+        return 'sounds/xyloNote3.wav';
+      case 3:
+        return 'sounds/xyloNote4.wav';
+      case 4:
+        return 'sounds/xyloNote5.wav';
+      case 5:
+        return 'sounds/xyloNote6.wav';
+      case 6:
+        return 'sounds/xyloNote6.wav';
+    }
+  }
+
+  getColor(int index) {
+    switch (index) {
+      case 0:
+        return Colors.orange;
+      case 1:
+        return Colors.blue;
+      case 2:
+        return Colors.pink;
+      case 3:
+        return Colors.green;
+      case 4:
+        return Colors.lightBlueAccent;
+      case 5:
+        return Colors.yellow;
+      case 6:
+        return Colors.red;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: Column(
-          children: [
-            Expanded(
-              child: InkWell(
-                onTap: () async {
-                  await audioPlayer.play(AssetSource('sounds/xyloNote1.wav'));
-                },
-                child: Container(
-                  color: Colors.orange,
+          children: [0, 1, 2, 3, 4, 5, 6]
+              .map(
+                (index) => XyloButtonWidget(
+                  audioFilePath: getAudioFilePath(index),
+                  buttonColor: getColor(index),
                 ),
-              ),
-            ),
-            Expanded(
-              child: InkWell(
-                onTap: () async {
-                  await audioPlayer.play(AssetSource('sounds/xyloNote2.wav'));
-                },
-                child: Container(
-                  color: Colors.blue,
-                ),
-              ),
-            ),
-            Expanded(
-              child: InkWell(
-                onTap: () async {
-                  await audioPlayer.play(AssetSource('sounds/xyloNote3.wav'));
-                },
-                child: Container(
-                  color: Colors.pink,
-                ),
-              ),
-            ),
-            Expanded(
-              child: InkWell(
-                onTap: () async {
-                  await audioPlayer.play(AssetSource('sounds/xyloNote4.wav'));
-                },
-                child: Container(
-                  color: Colors.green,
-                ),
-              ),
-            ),
-            Expanded(
-              child: InkWell(
-                onTap: () async {
-                  await audioPlayer.play(AssetSource('sounds/xyloNote5.wav'));
-                },
-                child: Container(
-                  color: Colors.lightBlueAccent,
-                ),
-              ),
-            ),
-            Expanded(
-              child: InkWell(
-                onTap: () async {
-                  await audioPlayer.play(AssetSource('sounds/xyloNote6.wav'));
-                },
-                child: Container(
-                  color: Colors.yellow,
-                ),
-              ),
-            ),
-            Expanded(
-              child: InkWell(
-                onTap: () async {
-                  await audioPlayer.play(AssetSource('sounds/xyloNote7.wav'));
-                },
-                child: Container(
-                  color: Colors.red,
-                ),
-              ),
-            ),
-          ],
+              )
+              .toList(),
+        ),
+      ),
+    );
+  }
+}
+
+class XyloButtonWidget extends StatefulWidget {
+  const XyloButtonWidget(
+      {super.key, required this.audioFilePath, required this.buttonColor});
+  final String audioFilePath;
+  final Color buttonColor;
+
+  @override
+  State<XyloButtonWidget> createState() => _XyloButtonWidgetState();
+}
+
+class _XyloButtonWidgetState extends State<XyloButtonWidget> {
+  AudioPlayer audioPlayer = AudioPlayer();
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: InkWell(
+        enableFeedback: false,
+        onTap: () async {
+          await audioPlayer.play(AssetSource(widget.audioFilePath));
+        },
+        child: Container(
+          color: widget.buttonColor,
         ),
       ),
     );
